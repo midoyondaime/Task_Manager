@@ -15,11 +15,15 @@ pipeline {
           sudo apt install nodejs -y
           which npm
           """
+
+        sh "echo $PATH"
+        sh "export PATH="$(PATH):/usr/games:/usr/local/games"
         }
       }
     }
   }
 }
+
 
 
 
