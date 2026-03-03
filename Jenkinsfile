@@ -32,7 +32,7 @@ pipeline {
                     sh """
                     echo "I run no matter what happens in the tests!"
                     // Commonly used to archive test reports
-                    junit '**/test-results/*.xml' 
+                    // junit '**/test-results/*.xml' 
                     """
                 }
                 success {
@@ -47,6 +47,7 @@ pipeline {
         
      }
 }
+
 
 
 
