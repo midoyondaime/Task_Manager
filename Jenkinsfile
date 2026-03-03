@@ -18,8 +18,18 @@ pipeline {
                 """
             }
         }
+
+        stage("Test") {
+            steps {
+                // We use one 'sh' block so the environment stays consistent
+                sh """
+                    npm test
+                """
+            }
+        }
         
      }
 }
+
 
 
