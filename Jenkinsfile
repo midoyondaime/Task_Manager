@@ -31,9 +31,10 @@ pipeline {
                 always {
                     sh """
                     echo "I run no matter what happens in the tests!"
+                    """
                     // Commonly used to archive test reports
                     // junit '**/test-results/*.xml' 
-                    """
+                    
                 }
                 success {
                     echo "Tests passed! Deployment is now possible."
@@ -47,6 +48,7 @@ pipeline {
         
      }
 }
+
 
 
 
