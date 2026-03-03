@@ -1,18 +1,17 @@
-pipeline { 
+pipeline {
   agent any
 
   stages {
-    stage("Checkout"){
+    stage("Checkout") {
       steps {
-           checkout scm
+        checkout scm
+      }
     }
-    }
+
     stage("Install dependencies") {
       steps {
-    {
-      sh "npm install"
+        sh "npm install"
+      }
     }
   }
 }
-
-
