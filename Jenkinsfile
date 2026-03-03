@@ -13,11 +13,12 @@ pipeline {
         script {
         sh """
           sudo install npm
-          npm install
+          
           """
         }
       }
     }
   }
 }
+
 
