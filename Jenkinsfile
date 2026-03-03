@@ -29,9 +29,9 @@ pipeline {
             
             post {
                // always {
-                 ///   echo "I run no matter what happens in the tests!"
+                    echo "I run no matter what happens in the tests!"
                     // Commonly used to archive test reports
-                   /// junit '**/test-results/*.xml' 
+                    junit '**/test-results/*.xml' 
                /// }
                 success {
                     echo "Tests passed! Deployment is now possible."
@@ -45,6 +45,7 @@ pipeline {
         
      }
 }
+
 
 
 
