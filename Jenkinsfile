@@ -12,7 +12,7 @@ pipeline {
       steps {
         script {
         sh """
-          sudo apt install nodejs
+          sudo apt install nodejs -y
           npm install
           
           """
@@ -21,6 +21,7 @@ pipeline {
     }
   }
 }
+
 
 
 
