@@ -10,8 +10,14 @@ pipeline {
 
     stage("Install dependencies") {
       steps {
-        sh "npm install"
+        script {
+        sh """
+          sudo install npm
+          npm install
+          """
+        }
       }
     }
   }
 }
+
