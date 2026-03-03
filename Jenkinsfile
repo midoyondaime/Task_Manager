@@ -13,14 +13,14 @@ pipeline {
         script {
         sh """
           sudo apt install nodejs -y
-          npm install
-          
+          which npm
           """
         }
       }
     }
   }
 }
+
 
 
 
