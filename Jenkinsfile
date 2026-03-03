@@ -32,9 +32,6 @@ pipeline {
                      // Commonly used to archive test reports
                     sh """
                     echo "I run no matter what happens in the tests!"
-                    sudo apt install junit -y
-                   
-                    junit '**/test-results/*.xml' 
                     """
                 }
                 success {
@@ -49,6 +46,7 @@ pipeline {
         
      }
 }
+
 
 
 
