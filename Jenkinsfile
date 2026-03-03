@@ -1,5 +1,9 @@
 pipeline {
   agent any
+  environment {
+        // This prepends your paths to the system PATH for the whole pipeline
+        PATH = "/usr/local/bin:/usr/bin:/bin:/usr/games:/usr/local/games:${env.PATH}"
+    }
 
   stages {
     stage("Checkout") {
@@ -14,17 +18,13 @@ pipeline {
         sh """
           sudo apt install nodejs -y
           """
-
-        sh 'echo $PATH'
-        sh 'export PATH="$PATH:/usr/games:/usr/local/games"'
-
-        //sh 'which npm'
         sh 'npm install'
         }
       }
     }
   }
 }
+
 
 
 
