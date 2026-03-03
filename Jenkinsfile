@@ -16,7 +16,7 @@ pipeline {
           """
 
         sh 'echo $PATH'
-        sh 'export PATH="$(PATH):/usr/games:/usr/local/games"'
+        sh 'export PATH="$PATH:/usr/games:/usr/local/games"'
 
         sh 'which npm'
         sh 'npm install'
@@ -25,6 +25,7 @@ pipeline {
     }
   }
 }
+
 
 
 
