@@ -1,38 +1,22 @@
 pipeline {
-  agent any
-  environment {
-        // This prepends your paths to the system PATH for the whole pipeline
-        PATH = "/usr/local/bin:/usr/bin:/bin:/usr/games:/usr/local/games:${env.PATH}"
-    }
+    agent any
 
-  stages {
-    stage("Checkout") {
-      steps {
-        checkout scm
-      }
-    }
-
-    stage("Install dependencies") {
-      steps {
-        script {
-        sh """
-          sudo apt install nodejs -y
-          """
-        sh 'npm install'
+    stages {
+        stage("Install & Build") {
+            steps {
+                // We use one 'sh' block so the environment stays consistent
+                sh """
+                    sudo apt update
+                    sudo apt install nodejs npm -y
+                    
+                    # Verify they are there
+                    which node
+                    which npm
+                    
+                    # Run the install
+                    npm install
+                """
+            }
         }
-      }
     }
-  }
 }
-
-
-
-
-
-
-
-
-
-
-
-
