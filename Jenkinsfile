@@ -50,11 +50,12 @@ pipeline {
                     docker build -t image:tag .
                 """
             }
-        
+        }
         
         
      }
 }
+
 
 
 
