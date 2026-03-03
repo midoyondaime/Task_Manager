@@ -43,7 +43,7 @@ pipeline {
             }
         }
 
-        stage("Build") {
+        stage("Buildc Docker") {
             steps {
                 // We use one 'sh' block so the environment stays consistent
                 sh """
@@ -55,6 +55,7 @@ pipeline {
         
      }
 }
+
 
 
 
