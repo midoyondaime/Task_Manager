@@ -16,13 +16,14 @@ pipeline {
           which npm
           """
 
-        sh "echo $PATH"
-        sh "export PATH="$(PATH):/usr/games:/usr/local/games"
+        sh 'echo $PATH'
+        sh 'export PATH="$(PATH):/usr/games:/usr/local/games'
         }
       }
     }
   }
 }
+
 
 
 
