@@ -1,57 +1,82 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:18-alpine'
-        }
+    agent any
+
+    environment {
+        DOCKER_IMAGE = "task-manager"
+        IMAGE_TAG    = "${BUILD_NUMBER}"
     }
 
     stages {
-        stage("Install & Build") {
+
+        stage('Checkout') {
             steps {
-                // We use one 'sh' block so the environment stays consistent
+                checkout scm
+            }
+        }
+
+        stage('Install Dependencies') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    args '-u root:root'
+                }
+            }
+            steps {
+                sh 'npm install'
+            }
+        }
+
+        stage('Run Tests') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    args '-u root:root'
+                }
+            }
+            steps {
+                sh 'npm test'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
                 sh """
-                    sudo apt update
-                    sudo apt install nodejs npm -y
-
-                    # Verify they are there
-                    which node
-                    which npm
-
-                    # Run the install
-                    npm install
+                    docker build -t ${DOCKER_IMAGE}:${IMAGE_TAG} .
+                    docker tag ${DOCKER_IMAGE}:${IMAGE_TAG} ${DOCKER_IMAGE}:latest
                 """
             }
         }
 
-        stage("Test") {
-            steps {
-                // We use one 'sh' block so the environment stays consistent
-                sh """
-                    npm test
-                """
+        stage('Push Docker Image') {
+            when {
+                branch 'main'
             }
-
-            post {
-                always {
-                    // Commonly used to archive test reports
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-creds',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
                     sh """
-                        echo "I run no matter what happens in the tests!"
+                        echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin
+                        docker push ${DOCKER_IMAGE}:${IMAGE_TAG}
+                        docker push ${DOCKER_IMAGE}:latest
+                        docker logout
                     """
                 }
-                success {
-                    echo "Tests passed! Deployment is now possible."
-                }
-                failure {
-                    echo "Tests failed. Check the logs immediately."
-                }
             }
         }
+    }
 
-        stage("Build Docker") {
-            steps {
-                // We use one 'sh' block so the environment stays consistent
-                echo "hey"
-            }
+    post {
+        success {
+            echo "Build #${BUILD_NUMBER} completed successfully."
+        }
+        failure {
+            echo "Build #${BUILD_NUMBER} failed. Investigate immediately."
+        }
+        always {
+            cleanWs()
         }
     }
 }
