@@ -83,7 +83,7 @@
 
 pipeline {
     agent {
-        docker { image 'node:24.14.0-alpine3.23' }
+        dockerContainer { image 'node:24.14.0-alpine3.23' }
     }
     stages {
         stage('Test') {
@@ -93,3 +93,4 @@ pipeline {
         }
     }
 }
+
