@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'node:18-alpine'
+        }
+    }
 
     stages {
         stage("Install & Build") {
@@ -43,14 +47,11 @@ pipeline {
             }
         }
 
-        stage("Buildc Docker") {
+        stage("Build Docker") {
             steps {
                 // We use one 'sh' block so the environment stays consistent
                 echo "hey"
-
             }
         }
     }
 }
-
-
