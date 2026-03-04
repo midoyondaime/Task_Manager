@@ -2,6 +2,9 @@ pipeline {
     agent any
 
     stages {
+        stage("Checkout") {
+            checkout scm
+        }
         stage("Install & Build") {
             steps {
                 // We use one 'sh' block so the environment stays consistent
@@ -55,6 +58,7 @@ pipeline {
         
      }
 }
+
 
 
 
