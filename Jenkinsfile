@@ -91,7 +91,8 @@ pipeline {
 //                 sh 'node --eval "console.log(process.platform,process.env.CI)"'
 //             }
 //         }
-    }
+//    }
 }
+
 
 
