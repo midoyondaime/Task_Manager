@@ -1,65 +1,62 @@
 pipeline {
-    agent {
-        docker { image 'node:18-alpine' }
+    agent any
+
+    environment {
+        DOCKER_IMAGE = "my-app"
+        // Use the Jenkins build number as a unique version tag
+        IMAGE_TAG = "${env.BUILD_NUMBER}"
     }
 
     stages {
-        stage("Install & Build") {
+        stage('Audit & Lint') {
+            agent {
+                docker { image 'node:18-alpine' }
+            }
             steps {
-                // We use one 'sh' block so the environment stays consistent
-                sh """
-                    # Verify they are there
-                    which node
-                    which npm
-                    
-                    # Run the install
-                    npm install
-                """
+                // This runs inside a temporary Node container!
+                sh 'npm install'
+                sh 'npm audit'
             }
         }
 
-        stage("Test") {
-            steps {
-                // We use one 'sh' block so the environment stays consistent
-                sh """
-                    npm test
-                """
+        stage('Test') {
+            agent {
+                docker { image 'node:18-alpine' }
             }
-            
+            steps {
+                sh 'npm install'
+                sh 'npm test'
+            }
             post {
                 always {
-                     // Commonly used to archive test reports
-                    sh """
-                    echo "I run no matter what happens in the tests!"
-                    """
-                }
-                success {
-                    echo "Tests passed! Deployment is now possible."
-                }
-                failure {
-                    echo "Tests failed. Check the logs immediately."
+                    // Collect results before the container disappears
+                    junit '**/test-results.xml' 
                 }
             }
         }
 
-        
-        
-        
-     }
+        stage('Build & Push Image') {
+            steps {
+                script {
+                    // Build using your Dockerfile
+                    def app = docker.build("${DOCKER_IMAGE}:${IMAGE_TAG}")
+                    
+                    // Push to registry (requires configured credentials)
+                    // docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-creds') {
+                    //     app.push()
+                    //     app.push("latest")
+                    // }
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Successfully built version ${IMAGE_TAG}"
+        }
+        cleanup {
+            cleanWs() // Keeps the Jenkins server hard drive from filling up
+        }
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
