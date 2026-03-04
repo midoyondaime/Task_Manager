@@ -1,98 +1,61 @@
 pipeline {
     agent any
 
-    environment {
-        DOCKER_IMAGE = "task-manager"
-        IMAGE_TAG    = "${BUILD_NUMBER}"
-    }
-
     stages {
-
-        stage('Checkout') {
+        stage("Install & Build") {
             steps {
-                checkout scm
-            }
-        }
-
-        stage('Install Dependencies') {
-            agent {
-                dockerContainer {
-                    image 'node:18-alpine'
-                    
-                }
-            }
-            steps {
-                sh 'npm install'
-            }
-        }
-
-        stage('Run Tests') {
-            agent {
-                dockerContainer {
-                    image 'node:18-alpine'
-                    
-                }
-            }
-            steps {
-                sh 'npm test'
-            }
-        }
-
-        stage('Build Docker Image') {
-            steps {
+                // We use one 'sh' block so the environment stays consistent
                 sh """
-                    docker build -t ${DOCKER_IMAGE}:${IMAGE_TAG} .
-                    docker tag ${DOCKER_IMAGE}:${IMAGE_TAG} ${DOCKER_IMAGE}:latest
+                    sudo apt update
+                    sudo apt install nodejs npm -y
+                    
+                    # Verify they are there
+                    which node
+                    which npm
+                    
+                    # Run the install
+                    npm install
                 """
             }
         }
 
-        stage('Push Docker Image') {
-            when {
-                branch 'main'
-            }
+        stage("Test") {
             steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub-creds',
-                    usernameVariable: 'DOCKER_USER',
-                    passwordVariable: 'DOCKER_PASS'
-                )]) {
+                // We use one 'sh' block so the environment stays consistent
+                sh """
+                    npm test
+                """
+            }
+            
+            post {
+                always {
+                     // Commonly used to archive test reports
                     sh """
-                        echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin
-                        docker push ${DOCKER_IMAGE}:${IMAGE_TAG}
-                        docker push ${DOCKER_IMAGE}:latest
-                        docker logout
+                    echo "I run no matter what happens in the tests!"
                     """
+                }
+                success {
+                    echo "Tests passed! Deployment is now possible."
+                }
+                failure {
+                    echo "Tests failed. Check the logs immediately."
                 }
             }
         }
-    }
 
-    post {
-        success {
-            echo "Build #${BUILD_NUMBER} completed successfully."
+        stage("Buildc Docker") {
+            steps {
+                // We use one 'sh' block so the environment stays consistent
+                sh """
+                    echo hello
+                """
+            }
         }
-        failure {
-            echo "Build #${BUILD_NUMBER} failed. Investigate immediately."
-        }
-        always {
-            cleanWs()
-        }
-    }
+        
+        
+     }
 }
 
-// pipeline {
-//     agent {
-//         dockerContainer { image 'node:24.14.0-alpine3.23' }
-//     }
-//     stages {
-//         stage('Test') {
-//             steps {
-//                 sh 'node --eval "console.log(process.platform,process.env.CI)"'
-//             }
-//         }
-//    }
-//}
 
 
 
