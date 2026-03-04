@@ -1,14 +1,13 @@
 pipeline {
-    agent any
+    agent {
+        docker { image 'node:18-alpine' }
+    }
 
     stages {
         stage("Install & Build") {
             steps {
                 // We use one 'sh' block so the environment stays consistent
                 sh """
-                    sudo apt update
-                    sudo apt install nodejs npm -y
-                    
                     # Verify they are there
                     which node
                     which npm
@@ -48,6 +47,7 @@ pipeline {
         
      }
 }
+
 
 
 
