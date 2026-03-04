@@ -46,9 +46,11 @@ pipeline {
         stage("Buildc Docker") {
             steps {
                 // We use one 'sh' block so the environment stays consistent
+                echo "hey"
 
             }
         }
     }
 }
+
 
