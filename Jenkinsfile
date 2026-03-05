@@ -137,21 +137,21 @@ pipeline {
     // 'always'   = guaranteed to run regardless of outcome.
     // -------------------------------------------------------------------------
     post {
-        // success {
-        //     echo "🚀 Build #${BUILD_NUMBER} succeeded. Image: ${DOCKER_IMAGE}:${IMAGE_TAG}"
-        // }
+        success {
+            echo "🚀 Build #${BUILD_NUMBER} succeeded. Image: ${DOCKER_IMAGE}:${IMAGE_TAG}"
+        }
         unstable {
             echo "⚠️  Build #${BUILD_NUMBER} unstable — test failures detected."
         }
-        always {
+        failure {
             echo "💥 Build #${BUILD_NUMBER} failed."
             // Ready to add notifications here:
             //@mail to: 'mehdiusumaki@gmail.com', subject: "FAILED: ${JOB_NAME} #${BUILD_NUMBER}"
         }
-        //always {
-            // Wipes the workspace after every build — keeps disk usage clean.
-        //    cleanWs()
-        //}
+        always {
+            Wipes the workspace after every build — keeps disk usage clean.
+           cleanWs()
+        }
     }
  
 }
