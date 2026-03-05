@@ -149,7 +149,7 @@ pipeline {
             //@mail to: 'mehdiusumaki@gmail.com', subject: "FAILED: ${JOB_NAME} #${BUILD_NUMBER}"
         }
         always {
-            Wipes the workspace after every build — keeps disk usage clean.
+            //Wipes the workspace after every build — keeps disk usage clean.
            cleanWs()
         }
     }
