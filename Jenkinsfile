@@ -136,33 +136,22 @@ pipeline {
     // 'unstable' = tests ran but some failed (set by junit step).
     // 'always'   = guaranteed to run regardless of outcome.
     // -------------------------------------------------------------------------
-    // post {
-    //     // success {
-    //     //     echo "🚀 Build #${BUILD_NUMBER} succeeded. Image: ${DOCKER_IMAGE}:${IMAGE_TAG}"
-    //     // }
-    //     unstable {
-    //         echo "⚠️  Build #${BUILD_NUMBER} unstable — test failures detected."
-    //     }
-    //     always {
-    //         echo "💥 Build #${BUILD_NUMBER} failed."
-    //         // Ready to add notifications here:
-    //         //@mail to: 'mehdiusumaki@gmail.com', subject: "FAILED: ${JOB_NAME} #${BUILD_NUMBER}"
-    //     }
-    //     //always {
-    //         // Wipes the workspace after every build — keeps disk usage clean.
-    //     //    cleanWs()
-    //     //}
-    // }
     post {
-        failure {
-            mail to: 'mehdiusumaki@gmail.com',
-                 subject: "FAILED: ${JOB_NAME} #${BUILD_NUMBER}",
-                 body: "Job '${JOB_NAME}' build #${BUILD_NUMBER} failed.\n\nCheck it at: ${BUILD_URL}"
+        // success {
+        //     echo "🚀 Build #${BUILD_NUMBER} succeeded. Image: ${DOCKER_IMAGE}:${IMAGE_TAG}"
+        // }
+        unstable {
+            echo "⚠️  Build #${BUILD_NUMBER} unstable — test failures detected."
         }
-        success {
-            mail to: 'mehdiusumaki@gmail.com',
-                 subject: "SUCCESS: ${JOB_NAME} #${BUILD_NUMBER}",
-                 body: "Job '${JOB_NAME}' build #${BUILD_NUMBER} completed successfully."
+        always {
+            echo "💥 Build #${BUILD_NUMBER} failed."
+            // Ready to add notifications here:
+            //@mail to: 'mehdiusumaki@gmail.com', subject: "FAILED: ${JOB_NAME} #${BUILD_NUMBER}"
         }
+        //always {
+            // Wipes the workspace after every build — keeps disk usage clean.
+        //    cleanWs()
+        //}
     }
+ 
 }
