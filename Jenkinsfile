@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "task-manager"
+        DOCKER_IMAGE = "mido/task-manager"
         IMAGE_TAG    = "${BUILD_NUMBER}"
         NODE_ENV     = "test"
     }
