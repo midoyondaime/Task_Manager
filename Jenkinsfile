@@ -119,8 +119,8 @@ pipeline {
         failure {
             echo "Build #${BUILD_NUMBER} failed."
         }
-        always {
-            cleanWs()
-        }
+        // always {
+        //     cleanWs()
+        // }
     }
 }
