@@ -146,7 +146,7 @@ pipeline {
         always {
             echo "💥 Build #${BUILD_NUMBER} failed."
             // Ready to add notifications here:
-            mail to: 'mehdiusumaki@gmail.com', subject: "FAILED: ${JOB_NAME} #${BUILD_NUMBER}"
+            @mail to: 'mehdiusumaki@gmail.com', subject: "FAILED: ${JOB_NAME} #${BUILD_NUMBER}"
         }
         //always {
             // Wipes the workspace after every build — keeps disk usage clean.
