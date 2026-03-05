@@ -62,7 +62,7 @@
 
 
 pipeline {
-    agent none
+    agent any
 
     environment {
         DOCKER_IMAGE = "task-manager"
