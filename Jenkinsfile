@@ -80,6 +80,12 @@ pipeline {
                 sh 'curl --version'
             }
         }
+
+        stage("Checkout") {
+             steps {
+                 checkout scm
+             } 
+         }
     }
 }
 
