@@ -86,6 +86,21 @@ pipeline {
             }
         }
 
+        stage('Test Docker Login') {
+            steps {
+        withCredentials([usernamePassword(
+            credentialsId: 'docker_hub',
+            usernameVariable: 'DOCKER_USER',
+            passwordVariable: 'DOCKER_PASS'
+        )]) {
+            sh """
+                echo "Username is: \$DOCKER_USER"
+                echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin
+            """
+        }
+    }
+}
+
         // ---------------------------------------------------------------------
         // STAGE 4 — Push to Registry  (uncomment when ready)
         // 'withCredentials' pulls secrets from Jenkins Credential Store and
@@ -96,22 +111,22 @@ pipeline {
         //   2. Kind: "Username with password"
         //   3. ID: "dockerhub-credentials"
         // ---------------------------------------------------------------------
-        stage('Push Docker Image') {
-            steps {
-        withCredentials([usernamePassword(
-            credentialsId: 'docker_hub',
-            usernameVariable: 'DOCKER_USER',
-            passwordVariable: 'DOCKER_PASS'
-        )]) {
-            sh """
-                set +x
-                echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin
-                docker push ${DOCKER_IMAGE}:${IMAGE_TAG}
-                docker push ${DOCKER_IMAGE}:latest
-            """
-        }
-    }
-}
+//         stage('Push Docker Image') {
+//             steps {
+//         withCredentials([usernamePassword(
+//             credentialsId: 'docker_hub',
+//             usernameVariable: 'DOCKER_USER',
+//             passwordVariable: 'DOCKER_PASS'
+//         )]) {
+//             sh """
+//                 set +x
+//                 echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin
+//                 docker push ${DOCKER_IMAGE}:${IMAGE_TAG}
+//                 docker push ${DOCKER_IMAGE}:latest
+//             """
+//         }
+//     }
+// }
 
     } // end stages
 
