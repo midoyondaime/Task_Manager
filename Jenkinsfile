@@ -1,5 +1,11 @@
 pipeline {
-    agent any
+    //agent any
+    agent {
+        docker {
+            image 'node:alpine:3.19'
+            args '-u root'
+        }
+    }
 
     stages {
         stage("Checkout") {
@@ -11,15 +17,11 @@ pipeline {
             steps {
                 // We use one 'sh' block so the environment stays consistent
                 sh """
-                    sudo apt update
-                    sudo apt install nodejs npm -y
                     
                     # Verify they are there
                     which node
                     which npm
                     
-                    # Run the install
-                    npm install
                 """
             }
         }
@@ -60,6 +62,7 @@ pipeline {
         
      }
 }
+
 
 
 
