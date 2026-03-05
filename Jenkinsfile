@@ -100,17 +100,6 @@ pipeline {
             }
         }
 
-        post {
-        success {
-            echo "Build #${BUILD_NUMBER} completed successfully."
-        }
-        failure {
-            echo "Build #${BUILD_NUMBER} failed."
-        }
-        always {
-            cleanWs()
-        }
-    }
         stage('Build Docker Image') {
             agent any
             steps {
@@ -143,5 +132,15 @@ pipeline {
         // }
     }
 
-    
+    post {
+        success {
+            echo "Build #${BUILD_NUMBER} completed successfully."
+        }
+        failure {
+            echo "Build #${BUILD_NUMBER} failed."
+        }
+        always {
+            cleanWs()
+        }
+    }
 }
