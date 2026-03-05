@@ -133,9 +133,9 @@ pipeline {
             // Ready to add notifications here:
             // mail to: 'team@example.com', subject: "FAILED: ${JOB_NAME} #${BUILD_NUMBER}"
         }
-        always {
+        //always {
             // Wipes the workspace after every build — keeps disk usage clean.
-            cleanWs()
-        }
+        //    cleanWs()
+        //}
     }
 }
