@@ -74,6 +74,7 @@ pipeline {
                 }
             }
             steps {
+                sh 'rm -rf node_modules'   // ← add this line
                 sh 'npm ci'
             }
         }
