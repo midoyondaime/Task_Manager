@@ -1,11 +1,11 @@
 pipeline {
-    //agent any
-    agent {
-        docker {
-            image 'node:alpine:3.19'
-            args '-u root'
-        }
-    }
+    agent any
+    // agent {
+    //     docker {
+    //         image 'node:alpine:3.19'
+    //         args '-u root'
+    //     }
+    // }
 
     stages {
         stage("Checkout") {
