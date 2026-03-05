@@ -66,6 +66,7 @@ pipeline {
             agent {
                 docker {
                     image 'node:18-alpine'
+                    args '--tmpfs /.npm'
                     // 'reuseNode true' makes this container stage reuse the
                     // workspace checked out in the previous agent-any stage.
                     // Without it, Jenkins creates a new workspace and your
