@@ -72,12 +72,12 @@ pipeline {
         // feature branch. 'when' is how you gate stages in Jenkins.
         // ---------------------------------------------------------------------
         stage('Build Docker Image') {
-            when {
-                anyOf {
-                    branch 'main'
-                    branch 'master'
-                }
-            }
+            //when {
+            //    anyOf {
+            //        branch 'main'
+            //        branch 'master'
+            //    }
+            //}
             steps {
                 sh """
                     docker build -t ${DOCKER_IMAGE}:${IMAGE_TAG} .
@@ -97,7 +97,7 @@ pipeline {
         //   3. ID: "dockerhub-credentials"
         // ---------------------------------------------------------------------
         stage('Push Docker Image') {
-             when { branch 'main' }
+             //when { branch 'main' }
              steps {
                  withCredentials([usernamePassword(
                      credentialsId: 'dockerhub-credentials',
