@@ -97,21 +97,21 @@ pipeline {
         //   3. ID: "dockerhub-credentials"
         // ---------------------------------------------------------------------
         stage('Push Docker Image') {
-             //when { branch 'main' }
-             steps {
-                 withCredentials([usernamePassword(
-                     credentialsId: 'docker_hub',
-                     usernameVariable: 'DOCKER_USER',
-                     passwordVariable: 'DOCKER_PASS'
-                 )]) {
-                     sh """
-                         echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                         docker push ${DOCKER_IMAGE}:${IMAGE_TAG}
-                         docker push ${DOCKER_IMAGE}:latest
-                     """
-                 }
-             }
-         }
+            steps {
+        withCredentials([usernamePassword(
+            credentialsId: 'docker_hub',
+            usernameVariable: 'DOCKER_USER',
+            passwordVariable: 'DOCKER_PASS'
+        )]) {
+            sh """
+                set +x
+                echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin
+                docker push ${DOCKER_IMAGE}:${IMAGE_TAG}
+                docker push ${DOCKER_IMAGE}:latest
+            """
+        }
+    }
+}
 
     } // end stages
 
