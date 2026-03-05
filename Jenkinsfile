@@ -75,7 +75,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'rm -rf node_modules'   // ← add this line
+                sh 'npm ci --cache /tmp/npm-cache'
                 sh 'npm ci'
             }
         }
