@@ -70,7 +70,7 @@ pipeline {
                     // workspace checked out in the previous agent-any stage.
                     // Without it, Jenkins creates a new workspace and your
                     // source code isn't there.
-                    reuseNode true
+                    //reuseNode true
                 }
             }
             steps {
