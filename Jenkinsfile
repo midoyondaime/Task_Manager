@@ -76,7 +76,7 @@ pipeline {
             }
             steps {
                 sh 'npm ci --cache /tmp/npm-cache'
-                sh 'npm ci'
+                ///sh 'npm ci'
             }
         }
 
